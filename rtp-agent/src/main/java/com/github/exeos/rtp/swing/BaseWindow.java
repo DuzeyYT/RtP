@@ -1,71 +1,60 @@
 package com.github.exeos.rtp.swing;
 
+import com.github.exeos.rtp.AgentMain;
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Objects;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 public class BaseWindow extends JFrame {
 
   private JPanel contentPane;
-  private JButton buttonOK;
-  private JButton buttonCancel;
+  private JButton launchButton;
+  private JButton exitButton;
+  private JLabel welcomeLabel;
 
   public BaseWindow() {
     setContentPane(contentPane);
-    getRootPane().setDefaultButton(buttonOK);
+    getRootPane().setDefaultButton(launchButton);
+    setLocationRelativeTo(null);
+    setResizable(false);
 
-    buttonOK.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        onOK();
-      }
+    setIconImage(
+        new ImageIcon(Objects.requireNonNull(getClass().getResource("/1f999.png"))).getImage());
+    setTitle("RTP Agent");
+
+    launchButton.addActionListener(e -> {
+      AgentMain.continueLaunch = true;
+      launchButton.setVisible(false);
     });
 
-    buttonCancel.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        onCancel();
-      }
-    });
+    exitButton.addActionListener(e -> dispose());
 
     // call onCancel() when cross is clicked
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
-        onCancel();
+        dispose();
       }
     });
 
     // call onCancel() on ESCAPE
-    contentPane.registerKeyboardAction(new ActionListener() {
-                                         public void actionPerformed(ActionEvent e) {
-                                           onCancel();
-                                         }
-                                       }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+    contentPane.registerKeyboardAction(e -> dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
         JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-  }
-
-  private void onOK() {
-    // add your code here
-    dispose();
-  }
-
-  private void onCancel() {
-    // add your code here if necessary
-    dispose();
-  }
-
-  public static void main(String[] args) {
-    BaseWindow dialog = new BaseWindow();
-    dialog.pack();
-    dialog.setVisible(true);
-    System.exit(0);
   }
 
   {
@@ -83,62 +72,55 @@ public class BaseWindow extends JFrame {
    */
   private void $$$setupUI$$$() {
     contentPane = new JPanel();
-    contentPane.setLayout(
-        new com.intellij.uiDesigner.core.GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1,
-            -1));
+    contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
     final JPanel panel1 = new JPanel();
-    panel1.setLayout(
-        new com.intellij.uiDesigner.core.GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-    contentPane.add(panel1, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1,
-        com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-        com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH,
-        com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-            | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null,
-        0, false));
-    final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
-    panel1.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1,
-        com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-        com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
-        com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0,
-        false));
+    panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+    contentPane.add(panel1,
+        new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null,
+            null, null, 0, false));
     final JPanel panel2 = new JPanel();
-    panel2.setLayout(
-        new com.intellij.uiDesigner.core.GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1,
-            true, false));
-    panel1.add(panel2, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1,
-        com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-        com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH,
-        com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-            | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-        com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-            | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0,
+    panel2.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+    panel1.add(panel2,
+        new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null,
+            null, 0, false));
+    launchButton = new JButton();
+    launchButton.setText("Launch Application");
+    panel2.add(launchButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
+        GridConstraints.FILL_HORIZONTAL,
+        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+        GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+    exitButton = new JButton();
+    exitButton.setText("Exit");
+    panel2.add(exitButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER,
+        GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED,
+        GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(100, 10), null, 0, false));
+    final Spacer spacer1 = new Spacer();
+    panel2.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER,
+        GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0,
         false));
-    buttonOK = new JButton();
-    buttonOK.setText("OK");
-    panel2.add(buttonOK, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1,
-        com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-        com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
-        com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-            | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-        com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-    buttonCancel = new JButton();
-    buttonCancel.setText("Cancel");
-    panel2.add(buttonCancel, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1,
-        com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-        com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
-        com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-            | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-        com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     final JPanel panel3 = new JPanel();
-    panel3.setLayout(
-        new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-    contentPane.add(panel3, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1,
-        com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-        com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH,
-        com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-            | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-        com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-            | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0,
+    panel3.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
+    contentPane.add(panel3,
+        new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null,
+            null, 0, false));
+    welcomeLabel = new JLabel();
+    welcomeLabel.setText("Welcome to RTP!");
+    panel3.add(welcomeLabel,
+        new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+            GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0,
+            false));
+    final Spacer spacer2 = new Spacer();
+    panel3.add(spacer2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER,
+        GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null,
+        0, false));
+    final Spacer spacer3 = new Spacer();
+    panel3.add(spacer3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
+        GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0,
         false));
   }
 
@@ -148,4 +130,5 @@ public class BaseWindow extends JFrame {
   public JComponent $$$getRootComponent$$$() {
     return contentPane;
   }
+
 }

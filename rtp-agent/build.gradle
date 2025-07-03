@@ -11,6 +11,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.formdev:flatlaf:1.2'
     implementation 'com.intellij:forms_rt:7.0.3'
 }
 
